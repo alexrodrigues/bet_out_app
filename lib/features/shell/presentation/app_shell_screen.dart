@@ -32,23 +32,6 @@ class _AppShellScreenState extends State<AppShellScreen> {
           _StubTab(icon: Icons.person_outline),
         ],
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text(l10n.sosComingSoon)),
-          );
-        },
-        backgroundColor: BoColors.navy,
-        foregroundColor: Colors.white,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-        child: Text(
-          l10n.sos,
-          style: const TextStyle(
-            fontWeight: FontWeight.w800,
-            letterSpacing: 0.5,
-          ),
-        ),
-      ),
       bottomNavigationBar: NavigationBar(
         selectedIndex: _currentIndex,
         onDestinationSelected: (index) {

@@ -22,7 +22,7 @@ final class SimulatorIdle extends SimulatorState {
     this.lastResult,
     this.pendingResult,
     this.isSpinning = false,
-    this.errorMessageKey,
+    this.showBalanceAlarm = false,
   });
 
   final SimulatorStatsViewObject stats;
@@ -30,7 +30,7 @@ final class SimulatorIdle extends SimulatorState {
   final SpinResultViewObject? lastResult;
   final SpinResultViewObject? pendingResult;
   final bool isSpinning;
-  final String? errorMessageKey;
+  final bool showBalanceAlarm;
 
   @override
   List<Object?> get props => [
@@ -39,7 +39,7 @@ final class SimulatorIdle extends SimulatorState {
         lastResult,
         pendingResult,
         isSpinning,
-        errorMessageKey,
+        showBalanceAlarm,
       ];
 }
 

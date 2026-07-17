@@ -19,6 +19,7 @@ class SimulatorBloc extends Bloc<SimulatorEvent, SimulatorState> {
     on<SimulatorStarted>(_onStarted);
     on<SpinPressed>(_onSpinPressed);
     on<SpinAnimationCompleted>(_onSpinAnimationCompleted);
+    on<BalanceAlarmDismissed>(_onBalanceAlarmDismissed);
   }
 
   final SpinSimulatorUsecase _spinSimulator;
@@ -36,6 +37,7 @@ class SimulatorBloc extends Bloc<SimulatorEvent, SimulatorState> {
           stats: stats,
           lastResult: null,
           displayBalance: stats.balance,
+          showBalanceAlarm: stats.balance < SimulatorProvider.defaultBet,
         ),
       );
     } catch (_) {
@@ -70,7 +72,7 @@ class SimulatorBloc extends Bloc<SimulatorEvent, SimulatorState> {
             stats: current.stats,
             lastResult: current.lastResult,
             displayBalance: current.displayBalance,
-            errorMessageKey: 'insufficientBalance',
+            showBalanceAlarm: true,
           ),
         );
       } else {
@@ -88,23 +90,44 @@ class SimulatorBloc extends Bloc<SimulatorEvent, SimulatorState> {
     final current = state;
     if (current is! SimulatorIdle || current.pendingResult == null) return;
 
+    final pending = current.pendingResult!;
+    final broke =
+        pending.balanceAfter < SimulatorProvider.defaultBet;
+
     try {
       final stats = await _getStats.invoke();
       emit(
         SimulatorIdle(
           stats: stats,
-          lastResult: current.pendingResult,
+          lastResult: pending,
           displayBalance: stats.balance,
+          showBalanceAlarm: broke,
         ),
       );
     } catch (_) {
       emit(
         SimulatorIdle(
           stats: current.stats,
-          lastResult: current.pendingResult,
-          displayBalance: current.pendingResult!.balanceAfter,
+          lastResult: pending,
+          displayBalance: pending.balanceAfter,
+          showBalanceAlarm: broke,
         ),
       );
     }
+  }
+
+  void _onBalanceAlarmDismissed(
+    BalanceAlarmDismissed event,
+    Emitter<SimulatorState> emit,
+  ) {
+    final current = state;
+    if (current is! SimulatorIdle || !current.showBalanceAlarm) return;
+    emit(
+      SimulatorIdle(
+        stats: current.stats,
+        displayBalance: current.displayBalance,
+        lastResult: current.lastResult,
+      ),
+    );
   }
 }

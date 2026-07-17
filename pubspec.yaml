@@ -21,6 +21,7 @@ dependencies:
   bloc: ^9.2.1
   equatable: ^2.0.5
   cupertino_icons: ^1.0.6
+  url_launcher: ^6.1.7
 
 dev_dependencies:
   flutter_test:

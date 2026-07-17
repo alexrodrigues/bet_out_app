@@ -40,14 +40,7 @@ class _SimulatorView extends StatelessWidget {
   }
 
   String _formatBalance(double value) {
-    if (value >= 1000) {
-      final k = value / 1000;
-      if (k == k.roundToDouble()) {
-        return '\$${k.toStringAsFixed(0)}k';
-      }
-      return '\$${k.toStringAsFixed(1)}k';
-    }
-    return '\$${value.toStringAsFixed(0)}';
+    return '\$ ${value.toStringAsFixed(0)}';
   }
 
   @override
@@ -56,16 +49,34 @@ class _SimulatorView extends StatelessWidget {
 
     return SafeArea(
       child: BlocConsumer<SimulatorBloc, SimulatorState>(
+        listenWhen: (previous, current) {
+          final wasShowing = previous is SimulatorIdle && previous.showBalanceAlarm;
+          final isShowing = current is SimulatorIdle && current.showBalanceAlarm;
+          return isShowing && !wasShowing;
+        },
         listener: (context, state) {
-          if (state is SimulatorIdle && state.errorMessageKey != null) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(
-                content: Text(
-                  _resolveMessage(l10n, state.errorMessageKey),
-                ),
-              ),
-            );
-          }
+          if (state is! SimulatorIdle || !state.showBalanceAlarm) return;
+          showDialog<void>(
+            context: context,
+            barrierDismissible: false,
+            builder: (dialogContext) {
+              return AlertDialog(
+                title: Text(l10n.insufficientBalanceTitle),
+                content: Text(l10n.insufficientBalance),
+                actions: [
+                  TextButton(
+                    onPressed: () {
+                      Navigator.of(dialogContext).pop();
+                      context
+                          .read<SimulatorBloc>()
+                          .add(const BalanceAlarmDismissed());
+                    },
+                    child: Text(l10n.ok),
+                  ),
+                ],
+              );
+            },
+          );
         },
         builder: (context, state) {
           if (state is SimulatorLoading || state is SimulatorInitial) {
@@ -135,6 +146,8 @@ class _SimulatorView extends StatelessWidget {
                   children: [
                     const IntentBanner(),
                     const SizedBox(height: 16),
+                    StatsCard(stats: state.stats),
+                    const SizedBox(height: 16),
                     Text(
                       l10n.outcomeGridTitle,
                       style: Theme.of(context).textTheme.labelSmall?.copyWith(
@@ -175,6 +188,8 @@ class _SimulatorView extends StatelessWidget {
                       ),
                     ],
                     const SizedBox(height: 16),
+                    const HotlineBanner(),
+                    const SizedBox(height: 16),
                     SpinButton(
                       enabled: !state.isSpinning &&
                           state.displayBalance >= 50,
@@ -184,10 +199,6 @@ class _SimulatorView extends StatelessWidget {
                             .add(const SpinPressed());
                       },
                     ),
-                    const SizedBox(height: 16),
-                    const HotlineBanner(),
-                    const SizedBox(height: 16),
-                    StatsCard(stats: state.stats),
                   ],
                 ),
               ),

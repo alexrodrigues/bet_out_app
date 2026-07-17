@@ -32,8 +32,6 @@ class AppLocalizations {
       'navSimulator': 'Simulator',
       'navSupport': 'Support',
       'navProfile': 'Profile',
-      'sos': 'SOS',
-      'sosComingSoon': 'SOS support will be available soon.',
       'balanceLabel': 'BALANCE',
       'simulatorIntent':
           'This simulator intentionally removes dopamine triggers like neon lights and celebratory sounds to show the cold mathematical reality of house edges.',
@@ -46,16 +44,18 @@ class AppLocalizations {
       'spinResultLoss':
           'The algorithm forced a loss. Your virtual balance decreased. In real life, the house edge is designed to drain your wallet.',
       'hotlineMessage':
-          'Need immediate help? The recovery hotline is available 24/7.',
-      'callNow': 'Call Now',
-      'hotlineComingSoon': 'Hotline number will be configured soon.',
+          'Need immediate help? There are therapists how can help you right now',
+      'learnMore': 'Learn more',
+      'unableToOpenLink': 'Unable to open link.',
       'statisticalReality': 'Statistical Reality',
       'rtpLabel': 'Return to Player (RTP)',
       'houseMarginLabel': 'House Margin',
       'avgLossPerHourLabel': 'Avg. Loss Per Hour',
       'lastFiveSessions': 'Last 5 Sessions',
       'winLossRatio': 'Win/Loss Ratio: {rate}% Win rate (Non-Cumulative)',
-      'insufficientBalance': 'Not enough virtual balance to spin.',
+      'insufficientBalance': 'Not enough balance for now',
+      'insufficientBalanceTitle': 'Out of balance',
+      'ok': 'OK',
       'simulatorLoadError': 'Unable to load simulator.',
       'simulatorSpinError': 'Unable to complete spin.',
     },
@@ -72,8 +72,6 @@ class AppLocalizations {
       'navSimulator': 'Simulador',
       'navSupport': 'Apoio',
       'navProfile': 'Perfil',
-      'sos': 'SOS',
-      'sosComingSoon': 'O suporte SOS estará disponível em breve.',
       'balanceLabel': 'SALDO',
       'simulatorIntent':
           'Este simulador remove de propósito gatilhos de dopamina como neon e sons de celebração para mostrar a realidade matemática fria da margem da casa.',
@@ -87,9 +85,9 @@ class AppLocalizations {
       'spinResultLoss':
           'O algoritmo forçou uma perda. Seu saldo virtual diminuiu. Na vida real, a margem da casa é desenhada para drenar sua carteira.',
       'hotlineMessage':
-          'Precisa de ajuda imediata? A linha de recuperação está disponível 24/7.',
-      'callNow': 'Ligar agora',
-      'hotlineComingSoon': 'O número da linha será configurado em breve.',
+          'Precisa de ajuda imediata? Há terapeutas que podem te ajudar agora',
+      'learnMore': 'Saiba mais',
+      'unableToOpenLink': 'Não foi possível abrir o link.',
       'statisticalReality': 'Realidade estatística',
       'rtpLabel': 'Retorno ao jogador (RTP)',
       'houseMarginLabel': 'Margem da casa',
@@ -97,7 +95,9 @@ class AppLocalizations {
       'lastFiveSessions': 'Últimas 5 sessões',
       'winLossRatio':
           'Razão ganho/perda: {rate}% taxa de vitória (não cumulativa)',
-      'insufficientBalance': 'Saldo virtual insuficiente para girar.',
+      'insufficientBalance': 'Saldo insuficiente por enquanto',
+      'insufficientBalanceTitle': 'Sem saldo',
+      'ok': 'OK',
       'simulatorLoadError': 'Não foi possível carregar o simulador.',
       'simulatorSpinError': 'Não foi possível concluir o giro.',
     },
@@ -120,8 +120,6 @@ class AppLocalizations {
   String get navSimulator => _text('navSimulator');
   String get navSupport => _text('navSupport');
   String get navProfile => _text('navProfile');
-  String get sos => _text('sos');
-  String get sosComingSoon => _text('sosComingSoon');
   String get balanceLabel => _text('balanceLabel');
   String get simulatorIntent => _text('simulatorIntent');
   String get outcomeGridTitle => _text('outcomeGridTitle');
@@ -131,8 +129,8 @@ class AppLocalizations {
   String get spinResultWin => _text('spinResultWin');
   String get spinResultLoss => _text('spinResultLoss');
   String get hotlineMessage => _text('hotlineMessage');
-  String get callNow => _text('callNow');
-  String get hotlineComingSoon => _text('hotlineComingSoon');
+  String get learnMore => _text('learnMore');
+  String get unableToOpenLink => _text('unableToOpenLink');
   String get statisticalReality => _text('statisticalReality');
   String get rtpLabel => _text('rtpLabel');
   String get houseMarginLabel => _text('houseMarginLabel');
@@ -141,6 +139,8 @@ class AppLocalizations {
   String winLossRatio(String rate) =>
       _text('winLossRatio').replaceAll('{rate}', rate);
   String get insufficientBalance => _text('insufficientBalance');
+  String get insufficientBalanceTitle => _text('insufficientBalanceTitle');
+  String get ok => _text('ok');
   String get simulatorLoadError => _text('simulatorLoadError');
   String get simulatorSpinError => _text('simulatorSpinError');
 }
