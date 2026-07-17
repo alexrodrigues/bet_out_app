@@ -18,14 +18,18 @@ class SimulatorProvider {
   static const winMultiplier = 3.0;
   static const recentLimit = 5;
 
-  /// Target long-run RTP ~92.4% with 3× payout ⇒ p ≈ 0.308.
-  static const targetRtpPercent = 92.4;
+  /// Displayed house margin (fixed educational figure).
+  static const houseMarginPercent = 15.0;
+
+  /// Target long-run RTP = 100 − house margin, with 3× payout.
+  static const targetRtpPercent = 100.0 - houseMarginPercent;
   static const winProbability = targetRtpPercent / (winMultiplier * 100);
 
   static const _balanceKey = 'simulator_balance_v2';
   static const _outcomesKey = 'simulator_recent_outcomes_v2';
   static const _wageredKey = 'simulator_total_wagered_v2';
   static const _returnedKey = 'simulator_total_returned_v2';
+  static const _totalLostKey = 'simulator_total_lost_v2';
   static const _sessionStartedKey = 'simulator_session_started_ms_v2';
 
   final SharedPreferences _prefs;
@@ -33,13 +37,6 @@ class SimulatorProvider {
 
   @visibleForTesting
   set debugRandom(Random value) => _random = value;
-
-  @visibleForTesting
-  set debugNowMs(int? value) => _nowMsOverride = value;
-
-  int? _nowMsOverride;
-
-  int get _nowMs => _nowMsOverride ?? DateTime.now().millisecondsSinceEpoch;
 
   Future<double> getBalance() async {
     return _prefs.getDouble(_balanceKey) ?? startingBalance;
@@ -60,6 +57,10 @@ class SimulatorProvider {
     return _prefs.getDouble(_returnedKey) ?? 0;
   }
 
+  Future<double> getTotalLost() async {
+    return _prefs.getDouble(_totalLostKey) ?? 0;
+  }
+
   Future<SimulatorStatsDto> fetchStats() async {
     final outcomes = await getRecentOutcomes();
     final wins = outcomes.where((w) => w).length;
@@ -67,29 +68,17 @@ class SimulatorProvider {
     final returned = await getTotalReturned();
 
     final rtpPercent = wagered <= 0 ? 0.0 : (returned / wagered) * 100;
-    final houseMarginPercent = wagered <= 0 ? 0.0 : 100 - rtpPercent;
-    final avgLossPerHour = await _avgLossPerHour(
-      netLoss: wagered - returned,
-    );
+    // Cumulative stake lost on losing spins only (never decreases on wins).
+    final totalLoss = await getTotalLost();
 
     return SimulatorStatsDto(
       balance: await getBalance(),
       rtpPercent: rtpPercent,
       houseMarginPercent: houseMarginPercent,
-      avgLossPerHour: avgLossPerHour,
+      totalLoss: totalLoss,
       recentWins: wins,
       recentOutcomes: outcomes,
     );
-  }
-
-  Future<double> _avgLossPerHour({required double netLoss}) async {
-    final startedAt = _prefs.getInt(_sessionStartedKey);
-    if (startedAt == null || netLoss <= 0) return 0;
-
-    final elapsedMs = (_nowMs - startedAt).clamp(0, 1 << 62);
-    // Use at least 1 minute so short demos don't explode the rate.
-    final elapsedHours = max(elapsedMs / 3600000.0, 1 / 60.0);
-    return netLoss / elapsedHours;
   }
 
   Future<SpinResultDto> spin({double betAmount = defaultBet}) async {
@@ -114,6 +103,12 @@ class SimulatorProvider {
       _returnedKey,
       (await getTotalReturned()) + payout,
     );
+    if (!isWin) {
+      await _prefs.setDouble(
+        _totalLostKey,
+        (await getTotalLost()) + betAmount,
+      );
+    }
     await _appendOutcome(isWin);
 
     return SpinResultDto(
@@ -127,7 +122,10 @@ class SimulatorProvider {
 
   Future<void> _ensureSessionStarted() async {
     if (_prefs.getInt(_sessionStartedKey) == null) {
-      await _prefs.setInt(_sessionStartedKey, _nowMs);
+      await _prefs.setInt(
+        _sessionStartedKey,
+        DateTime.now().millisecondsSinceEpoch,
+      );
     }
   }
 

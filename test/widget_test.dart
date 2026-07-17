@@ -15,16 +15,16 @@ void main() {
     await tester.pumpWidget(const BetOutApp());
     await tester.pumpAndSettle();
 
-    expect(find.textContaining('RANDOMIZED'), findsOneWidget);
+    expect(find.textContaining('GRADE'), findsOneWidget);
 
     await tester.scrollUntilVisible(
-      find.textContaining('SPIN'),
+      find.textContaining('GIRAR'),
       200,
       scrollable: find.byType(Scrollable).first,
     );
     await tester.pumpAndSettle();
 
-    expect(find.textContaining('SPIN'), findsWidgets);
+    expect(find.textContaining('GIRAR'), findsWidgets);
   });
 
   testWidgets('localization resolves brand', (tester) async {

@@ -67,16 +67,16 @@ void main() {
       const dto = SimulatorStatsDto(
         balance: 10000,
         rtpPercent: 92.4,
-        houseMarginPercent: 7.6,
-        avgLossPerHour: 42.5,
+        houseMarginPercent: 15,
+        totalLoss: 42.5,
         recentWins: 1,
         recentOutcomes: [true, false, false, false, false],
       );
       const view = SimulatorStatsViewObject(
         balance: 10000,
         rtpPercent: 92.4,
-        houseMarginPercent: 7.6,
-        avgLossPerHour: 42.5,
+        houseMarginPercent: 15,
+        totalLoss: 42.5,
         winRatePercent: 20,
         recentOutcomes: [true, false, false, false, false],
       );

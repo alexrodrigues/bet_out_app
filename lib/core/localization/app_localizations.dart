@@ -14,8 +14,8 @@ class AppLocalizations {
       _AppLocalizationsDelegate();
 
   static const supportedLocales = [
-    Locale('en'),
     Locale('pt'),
+    Locale('en'),
   ];
 
   static final Map<String, Map<String, String>> _localizedValues = {
@@ -50,7 +50,7 @@ class AppLocalizations {
       'statisticalReality': 'Statistical Reality',
       'rtpLabel': 'Return to Player (RTP)',
       'houseMarginLabel': 'House Margin',
-      'avgLossPerHourLabel': 'Avg. Loss Per Hour',
+      'totalLossLabel': 'Total loss',
       'lastFiveSessions': 'Last 5 Sessions',
       'winLossRatio': 'Win/Loss Ratio: {rate}% Win rate (Non-Cumulative)',
       'insufficientBalance': 'Not enough balance for now',
@@ -91,7 +91,7 @@ class AppLocalizations {
       'statisticalReality': 'Realidade estatística',
       'rtpLabel': 'Retorno ao jogador (RTP)',
       'houseMarginLabel': 'Margem da casa',
-      'avgLossPerHourLabel': 'Perda média por hora',
+      'totalLossLabel': 'Perda total',
       'lastFiveSessions': 'Últimas 5 sessões',
       'winLossRatio':
           'Razão ganho/perda: {rate}% taxa de vitória (não cumulativa)',
@@ -134,7 +134,7 @@ class AppLocalizations {
   String get statisticalReality => _text('statisticalReality');
   String get rtpLabel => _text('rtpLabel');
   String get houseMarginLabel => _text('houseMarginLabel');
-  String get avgLossPerHourLabel => _text('avgLossPerHourLabel');
+  String get totalLossLabel => _text('totalLossLabel');
   String get lastFiveSessions => _text('lastFiveSessions');
   String winLossRatio(String rate) =>
       _text('winLossRatio').replaceAll('{rate}', rate);

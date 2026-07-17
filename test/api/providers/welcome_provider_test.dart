@@ -12,7 +12,7 @@ void main() {
 
       final dto = await provider.fetchWelcome();
 
-      expect(dto.message, 'Welcome to Bet Out');
+      expect(dto.message, 'Bem-vindo ao ForaDaBet');
     });
 
     test('returns persisted message', () async {

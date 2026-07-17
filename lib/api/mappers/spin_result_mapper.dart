@@ -22,7 +22,7 @@ class SpinResultMapper {
       balance: dto.balance,
       rtpPercent: dto.rtpPercent,
       houseMarginPercent: dto.houseMarginPercent,
-      avgLossPerHour: dto.avgLossPerHour,
+      totalLoss: dto.totalLoss,
       winRatePercent: dto.winRatePercent,
       recentOutcomes: List<bool>.from(dto.recentOutcomes),
     );

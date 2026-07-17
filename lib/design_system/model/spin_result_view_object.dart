@@ -35,7 +35,7 @@ class SimulatorStatsViewObject extends Equatable {
     required this.balance,
     required this.rtpPercent,
     required this.houseMarginPercent,
-    required this.avgLossPerHour,
+    required this.totalLoss,
     required this.winRatePercent,
     required this.recentOutcomes,
   });
@@ -43,7 +43,7 @@ class SimulatorStatsViewObject extends Equatable {
   final double balance;
   final double rtpPercent;
   final double houseMarginPercent;
-  final double avgLossPerHour;
+  final double totalLoss;
   final double winRatePercent;
   final List<bool> recentOutcomes;
 
@@ -52,7 +52,7 @@ class SimulatorStatsViewObject extends Equatable {
         balance,
         rtpPercent,
         houseMarginPercent,
-        avgLossPerHour,
+        totalLoss,
         winRatePercent,
         recentOutcomes,
       ];

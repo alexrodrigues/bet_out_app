@@ -34,17 +34,13 @@ class StatsCard extends StatelessWidget {
           ),
           const SizedBox(height: 12),
           _StatRow(
-            label: l10n.rtpLabel,
-            value: '${stats.rtpPercent.toStringAsFixed(1)}%',
-          ),
-          _StatRow(
             label: l10n.houseMarginLabel,
             value: '${stats.houseMarginPercent.toStringAsFixed(1)}%',
             valueColor: BoColors.houseMargin,
           ),
           _StatRow(
-            label: l10n.avgLossPerHourLabel,
-            value: '\$${stats.avgLossPerHour.toStringAsFixed(2)}',
+            label: l10n.totalLossLabel,
+            value: '\$ ${stats.totalLoss.toStringAsFixed(0)}',
           ),
           const SizedBox(height: 16),
           Text(

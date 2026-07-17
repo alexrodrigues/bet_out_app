@@ -3,7 +3,7 @@ class SimulatorStatsDto {
     required this.balance,
     required this.rtpPercent,
     required this.houseMarginPercent,
-    required this.avgLossPerHour,
+    required this.totalLoss,
     required this.recentWins,
     required this.recentOutcomes,
   });
@@ -11,7 +11,7 @@ class SimulatorStatsDto {
   final double balance;
   final double rtpPercent;
   final double houseMarginPercent;
-  final double avgLossPerHour;
+  final double totalLoss;
   final int recentWins;
   final List<bool> recentOutcomes;
 

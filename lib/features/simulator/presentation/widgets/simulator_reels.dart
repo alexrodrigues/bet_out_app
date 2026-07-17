@@ -47,6 +47,7 @@ class _SimulatorReelsState extends State<SimulatorReels>
   late List<List<int>> _strips;
   int _completedReels = 0;
   bool _listening = false;
+  int _spinGeneration = 0;
 
   ui.Image? _boardImage;
   double? _boardAspect;
@@ -105,6 +106,7 @@ class _SimulatorReelsState extends State<SimulatorReels>
   }
 
   Future<void> _startSpin(List<int> targets) async {
+    final generation = ++_spinGeneration;
     _completedReels = 0;
     _listening = true;
     for (var i = 0; i < 3; i++) {
@@ -115,7 +117,7 @@ class _SimulatorReelsState extends State<SimulatorReels>
 
     for (var i = 0; i < 3; i++) {
       _controllers[i].forward().whenComplete(() {
-        if (!_listening) return;
+        if (!_listening || generation != _spinGeneration) return;
         _completedReels++;
         if (_completedReels >= 3) {
           _listening = false;

@@ -18,8 +18,8 @@ void main() {
   const stats = SimulatorStatsViewObject(
     balance: 150,
     rtpPercent: 0,
-    houseMarginPercent: 0,
-    avgLossPerHour: 0,
+    houseMarginPercent: 15,
+    totalLoss: 0,
     winRatePercent: 0,
     recentOutcomes: [],
   );
@@ -36,8 +36,8 @@ void main() {
   const statsAfter = SimulatorStatsViewObject(
     balance: 100,
     rtpPercent: 0,
-    houseMarginPercent: 100,
-    avgLossPerHour: 50,
+    houseMarginPercent: 15,
+    totalLoss: 50,
     winRatePercent: 0,
     recentOutcomes: [false],
   );
@@ -54,8 +54,8 @@ void main() {
   const brokeStats = SimulatorStatsViewObject(
     balance: 0,
     rtpPercent: 0,
-    houseMarginPercent: 100,
-    avgLossPerHour: 150,
+    houseMarginPercent: 15,
+    totalLoss: 150,
     winRatePercent: 0,
     recentOutcomes: [false, false, false],
   );
@@ -84,7 +84,7 @@ void main() {
   blocTest<SimulatorBloc, SimulatorState>(
     'spin then animation complete updates balance',
     build: () {
-      when(() => statsUsecase.invoke()).thenAnswer((_) async => stats);
+      when(() => statsUsecase.invoke()).thenAnswer((_) async => statsAfter);
       when(() => spinUsecase.invoke(betAmount: 50))
           .thenAnswer((_) async => spinResult);
       return SimulatorBloc(spinUsecase, statsUsecase);
@@ -101,7 +101,7 @@ void main() {
     },
     expect: () => [
       const SimulatorIdle(
-        stats: stats,
+        stats: statsAfter,
         displayBalance: 150,
         lastResult: spinResult,
         pendingResult: spinResult,

@@ -10,7 +10,7 @@ class WelcomeProvider {
   WelcomeProvider(this._prefs);
 
   static const _messageKey = 'welcome_message';
-  static const _defaultMessage = 'Welcome to Bet Out';
+  static const _defaultMessage = 'Bem-vindo ao ForaDaBet';
 
   final SharedPreferences _prefs;
 

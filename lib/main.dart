@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 
 import 'core/localization/app_localizations.dart';
@@ -10,6 +11,10 @@ import 'features/shell/presentation/app_shell_screen.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await SystemChrome.setPreferredOrientations([
+    DeviceOrientation.portraitUp,
+    DeviceOrientation.portraitDown,
+  ]);
   await configureDependencies();
   runApp(const BetOutApp());
 }
@@ -22,9 +27,10 @@ class BetOutApp extends StatelessWidget {
     final navigation = getIt<NavigationService>();
 
     return MaterialApp(
-      title: 'Bet Out',
+      title: 'ForaDaBet',
       theme: BoTheme.light(),
       navigatorKey: navigation.navigatorKey,
+      locale: const Locale('pt'),
       localizationsDelegates: const [
         AppLocalizations.delegate,
         GlobalMaterialLocalizations.delegate,

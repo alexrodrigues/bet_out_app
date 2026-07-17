@@ -56,9 +56,12 @@ class SimulatorBloc extends Bloc<SimulatorEvent, SimulatorState> {
       final result = await _spinSimulator.invoke(
         betAmount: SimulatorProvider.defaultBet,
       );
+      // Refresh stats immediately so "Perda total" updates without waiting
+      // for the reel animation to finish.
+      final stats = await _getStats.invoke();
       emit(
         SimulatorIdle(
-          stats: current.stats,
+          stats: stats,
           lastResult: result,
           displayBalance: current.displayBalance,
           isSpinning: true,
