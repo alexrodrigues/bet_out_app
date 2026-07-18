@@ -120,6 +120,16 @@ class SimulatorProvider {
     );
   }
 
+  /// Restores starting balance and clears all session counters.
+  Future<void> resetSession() async {
+    await _prefs.setDouble(_balanceKey, startingBalance);
+    await _prefs.remove(_outcomesKey);
+    await _prefs.remove(_wageredKey);
+    await _prefs.remove(_returnedKey);
+    await _prefs.remove(_totalLostKey);
+    await _prefs.remove(_sessionStartedKey);
+  }
+
   Future<void> _ensureSessionStarted() async {
     if (_prefs.getInt(_sessionStartedKey) == null) {
       await _prefs.setInt(

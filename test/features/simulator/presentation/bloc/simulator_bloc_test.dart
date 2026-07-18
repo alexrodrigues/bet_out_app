@@ -1,6 +1,7 @@
 import 'package:bet_out_app/api/providers/simulator_provider.dart';
 import 'package:bet_out_app/design_system/model/spin_result_view_object.dart';
 import 'package:bet_out_app/features/simulator/domain/get_simulator_stats_usecase.dart';
+import 'package:bet_out_app/features/simulator/domain/reset_simulator_usecase.dart';
 import 'package:bet_out_app/features/simulator/domain/spin_simulator_usecase.dart';
 import 'package:bet_out_app/features/simulator/presentation/bloc/simulator_bloc.dart';
 import 'package:bloc_test/bloc_test.dart';
@@ -11,9 +12,12 @@ class _MockSpinUsecase extends Mock implements SpinSimulatorUsecase {}
 
 class _MockStatsUsecase extends Mock implements GetSimulatorStatsUsecase {}
 
+class _MockResetUsecase extends Mock implements ResetSimulatorUsecase {}
+
 void main() {
   late _MockSpinUsecase spinUsecase;
   late _MockStatsUsecase statsUsecase;
+  late _MockResetUsecase resetUsecase;
 
   const stats = SimulatorStatsViewObject(
     balance: 150,
@@ -63,13 +67,17 @@ void main() {
   setUp(() {
     spinUsecase = _MockSpinUsecase();
     statsUsecase = _MockStatsUsecase();
+    resetUsecase = _MockResetUsecase();
   });
+
+  SimulatorBloc buildBloc() =>
+      SimulatorBloc(spinUsecase, statsUsecase, resetUsecase);
 
   blocTest<SimulatorBloc, SimulatorState>(
     'loads stats on start',
     build: () {
       when(() => statsUsecase.invoke()).thenAnswer((_) async => stats);
-      return SimulatorBloc(spinUsecase, statsUsecase);
+      return buildBloc();
     },
     act: (bloc) => bloc.add(const SimulatorStarted()),
     expect: () => [
@@ -87,7 +95,7 @@ void main() {
       when(() => statsUsecase.invoke()).thenAnswer((_) async => statsAfter);
       when(() => spinUsecase.invoke(betAmount: 50))
           .thenAnswer((_) async => spinResult);
-      return SimulatorBloc(spinUsecase, statsUsecase);
+      return buildBloc();
     },
     seed: () => const SimulatorIdle(
       stats: stats,
@@ -121,7 +129,7 @@ void main() {
       when(() => spinUsecase.invoke(betAmount: 50))
           .thenAnswer((_) async => brokeResult);
       when(() => statsUsecase.invoke()).thenAnswer((_) async => brokeStats);
-      return SimulatorBloc(spinUsecase, statsUsecase);
+      return buildBloc();
     },
     seed: () => const SimulatorIdle(
       stats: stats,
@@ -146,7 +154,7 @@ void main() {
     build: () {
       when(() => spinUsecase.invoke(betAmount: SimulatorProvider.defaultBet))
           .thenThrow(StateError('insufficient_balance'));
-      return SimulatorBloc(spinUsecase, statsUsecase);
+      return buildBloc();
     },
     seed: () => const SimulatorIdle(
       stats: brokeStats,
@@ -158,6 +166,28 @@ void main() {
         stats: brokeStats,
         displayBalance: 0,
         showBalanceAlarm: true,
+      ),
+    ],
+  );
+
+  blocTest<SimulatorBloc, SimulatorState>(
+    'recharge restores starting balance and clears alarm',
+    build: () {
+      when(() => resetUsecase.invoke()).thenAnswer((_) async => stats);
+      return buildBloc();
+    },
+    seed: () => const SimulatorIdle(
+      stats: brokeStats,
+      displayBalance: 0,
+      lastResult: brokeResult,
+      showBalanceAlarm: true,
+    ),
+    act: (bloc) => bloc.add(const RechargePressed()),
+    expect: () => [
+      const SimulatorIdle(
+        stats: stats,
+        displayBalance: 150,
+        showBalanceAlarm: false,
       ),
     ],
   );

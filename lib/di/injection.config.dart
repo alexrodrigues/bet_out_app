@@ -24,6 +24,8 @@ import 'package:bet_out_app/features/home/presentation/bloc/home_bloc.dart'
     as _i1044;
 import 'package:bet_out_app/features/simulator/domain/get_simulator_stats_usecase.dart'
     as _i630;
+import 'package:bet_out_app/features/simulator/domain/reset_simulator_usecase.dart'
+    as _i400;
 import 'package:bet_out_app/features/simulator/domain/spin_simulator_usecase.dart'
     as _i107;
 import 'package:bet_out_app/features/simulator/presentation/bloc/simulator_bloc.dart'
@@ -64,6 +66,12 @@ extension GetItInjectableX on _i174.GetIt {
         gh<_i1041.WelcomeMapper>(),
       ),
     );
+    gh.factory<_i400.ResetSimulatorUsecase>(
+      () => _i400.ResetSimulatorUsecaseImpl(
+        gh<_i188.SimulatorProvider>(),
+        gh<_i36.SpinResultMapper>(),
+      ),
+    );
     gh.factory<_i630.GetSimulatorStatsUsecase>(
       () => _i630.GetSimulatorStatsUsecaseImpl(
         gh<_i188.SimulatorProvider>(),
@@ -90,6 +98,7 @@ extension GetItInjectableX on _i174.GetIt {
       () => _i783.SimulatorBloc(
         gh<_i107.SpinSimulatorUsecase>(),
         gh<_i630.GetSimulatorStatsUsecase>(),
+        gh<_i400.ResetSimulatorUsecase>(),
       ),
     );
     return this;

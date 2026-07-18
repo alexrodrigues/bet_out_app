@@ -22,3 +22,7 @@ final class SpinAnimationCompleted extends SimulatorEvent {
 final class BalanceAlarmDismissed extends SimulatorEvent {
   const BalanceAlarmDismissed();
 }
+
+final class RechargePressed extends SimulatorEvent {
+  const RechargePressed();
+}

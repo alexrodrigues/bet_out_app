@@ -17,6 +17,7 @@ class BoColors {
   static const Color spinStart = Color(0xFFFF8A00);
   static const Color spinEnd = Color(0xFFFFC107);
   static const Color helpBanner = Color(0xFF9C27B0);
+  static const Color menteSegura = Color(0xFF704B75);
   static const Color winRateFill = Color(0xFF66BB6A);
 }
 

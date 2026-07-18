@@ -161,5 +161,28 @@ void main() {
         ),
       );
     });
+
+    test('resetSession restores balance and clears counters', () async {
+      SharedPreferences.setMockInitialValues({
+        'simulator_balance_v2': 0.0,
+        'simulator_total_wagered_v2': 200.0,
+        'simulator_total_returned_v2': 50.0,
+        'simulator_total_lost_v2': 150.0,
+        'simulator_recent_outcomes_v2': '[false,false,true]',
+        'simulator_session_started_ms_v2': 1234567890,
+      });
+      final prefs = await SharedPreferences.getInstance();
+      final provider = SimulatorProvider(prefs);
+
+      await provider.resetSession();
+      final stats = await provider.fetchStats();
+
+      expect(stats.balance, 150);
+      expect(stats.rtpPercent, 0);
+      expect(stats.totalLoss, 0);
+      expect(stats.recentOutcomes, isEmpty);
+      expect(prefs.getDouble('simulator_total_wagered_v2'), isNull);
+      expect(prefs.getInt('simulator_session_started_ms_v2'), isNull);
+    });
   });
 }

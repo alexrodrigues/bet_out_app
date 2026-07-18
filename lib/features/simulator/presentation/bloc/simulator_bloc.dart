@@ -5,6 +5,7 @@ import 'package:injectable/injectable.dart';
 import '../../../../api/providers/simulator_provider.dart';
 import '../../../../design_system/model/spin_result_view_object.dart';
 import '../../domain/get_simulator_stats_usecase.dart';
+import '../../domain/reset_simulator_usecase.dart';
 import '../../domain/spin_simulator_usecase.dart';
 
 part 'simulator_event.dart';
@@ -15,15 +16,18 @@ class SimulatorBloc extends Bloc<SimulatorEvent, SimulatorState> {
   SimulatorBloc(
     this._spinSimulator,
     this._getStats,
+    this._resetSimulator,
   ) : super(const SimulatorInitial()) {
     on<SimulatorStarted>(_onStarted);
     on<SpinPressed>(_onSpinPressed);
     on<SpinAnimationCompleted>(_onSpinAnimationCompleted);
     on<BalanceAlarmDismissed>(_onBalanceAlarmDismissed);
+    on<RechargePressed>(_onRechargePressed);
   }
 
   final SpinSimulatorUsecase _spinSimulator;
   final GetSimulatorStatsUsecase _getStats;
+  final ResetSimulatorUsecase _resetSimulator;
 
   Future<void> _onStarted(
     SimulatorStarted event,
@@ -132,5 +136,28 @@ class SimulatorBloc extends Bloc<SimulatorEvent, SimulatorState> {
         lastResult: current.lastResult,
       ),
     );
+  }
+
+  Future<void> _onRechargePressed(
+    RechargePressed event,
+    Emitter<SimulatorState> emit,
+  ) async {
+    final current = state;
+    if (current is! SimulatorIdle) return;
+
+    try {
+      final stats = await _resetSimulator.invoke();
+      emit(
+        SimulatorIdle(
+          stats: stats,
+          displayBalance: stats.balance,
+          lastResult: null,
+          pendingResult: null,
+          showBalanceAlarm: false,
+        ),
+      );
+    } catch (_) {
+      emit(const SimulatorFailure(messageKey: 'simulatorLoadError'));
+    }
   }
 }

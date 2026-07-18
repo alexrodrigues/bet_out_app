@@ -56,6 +56,12 @@ class AppLocalizations {
       'insufficientBalance': 'Not enough balance for now',
       'insufficientBalanceTitle': 'Out of balance',
       'ok': 'OK',
+      'zeroBalanceTitle':
+          'You reached zero here, so you don\'t have to in real life.',
+      'zeroBalanceBody':
+          'Game math is designed for you to lose. Taking the step to stop can be difficult, but you don\'t have to do it alone. SafeMind connects you with professionals who understand what you are going through.',
+      'seekSupportCta': 'Seek Support at SafeMind',
+      'rechargeVirtualBalance': 'Recharge virtual balance',
       'simulatorLoadError': 'Unable to load simulator.',
       'simulatorSpinError': 'Unable to complete spin.',
     },
@@ -98,6 +104,12 @@ class AppLocalizations {
       'insufficientBalance': 'Saldo insuficiente por enquanto',
       'insufficientBalanceTitle': 'Sem saldo',
       'ok': 'OK',
+      'zeroBalanceTitle':
+          'Você chegou a zero aqui, para não precisar chegar na vida real.',
+      'zeroBalanceBody':
+          'A matemática dos jogos é feita para você perder. Dar o passo para parar pode ser difícil, mas você não precisa fazer isso sozinho. O Mente Segura conecta você a profissionais que entendem o que você está passando.',
+      'seekSupportCta': 'Buscar Apoio no Mente Segura',
+      'rechargeVirtualBalance': 'Recarregar saldo virtual',
       'simulatorLoadError': 'Não foi possível carregar o simulador.',
       'simulatorSpinError': 'Não foi possível concluir o giro.',
     },
@@ -141,6 +153,10 @@ class AppLocalizations {
   String get insufficientBalance => _text('insufficientBalance');
   String get insufficientBalanceTitle => _text('insufficientBalanceTitle');
   String get ok => _text('ok');
+  String get zeroBalanceTitle => _text('zeroBalanceTitle');
+  String get zeroBalanceBody => _text('zeroBalanceBody');
+  String get seekSupportCta => _text('seekSupportCta');
+  String get rechargeVirtualBalance => _text('rechargeVirtualBalance');
   String get simulatorLoadError => _text('simulatorLoadError');
   String get simulatorSpinError => _text('simulatorSpinError');
 }

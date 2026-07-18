@@ -10,6 +10,7 @@ import 'widgets/intent_banner.dart';
 import 'widgets/simulator_reels.dart';
 import 'widgets/spin_button.dart';
 import 'widgets/stats_card.dart';
+import 'widgets/zero_balance_dialog.dart';
 
 class SimulatorScreen extends StatelessWidget {
   const SimulatorScreen({super.key});
@@ -59,21 +60,15 @@ class _SimulatorView extends StatelessWidget {
           showDialog<void>(
             context: context,
             barrierDismissible: false,
+            barrierColor: Colors.black54,
             builder: (dialogContext) {
-              return AlertDialog(
-                title: Text(l10n.insufficientBalanceTitle),
-                content: Text(l10n.insufficientBalance),
-                actions: [
-                  TextButton(
-                    onPressed: () {
-                      Navigator.of(dialogContext).pop();
-                      context
-                          .read<SimulatorBloc>()
-                          .add(const BalanceAlarmDismissed());
-                    },
-                    child: Text(l10n.ok),
-                  ),
-                ],
+              return ZeroBalanceDialog(
+                onRecharge: () {
+                  Navigator.of(dialogContext).pop();
+                  context
+                      .read<SimulatorBloc>()
+                      .add(const RechargePressed());
+                },
               );
             },
           );
