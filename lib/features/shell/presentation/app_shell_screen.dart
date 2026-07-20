@@ -28,8 +28,6 @@ class _AppShellScreenState extends State<AppShellScreen> {
         children: const [
           HomeScreen(),
           SimulatorScreen(),
-          _StubTab(icon: Icons.health_and_safety_outlined),
-          _StubTab(icon: Icons.person_outline),
         ],
       ),
       bottomNavigationBar: NavigationBar(
@@ -50,46 +48,7 @@ class _AppShellScreenState extends State<AppShellScreen> {
             selectedIcon: const Icon(Icons.bar_chart),
             label: l10n.navSimulator,
           ),
-          NavigationDestination(
-            icon: const Icon(Icons.health_and_safety_outlined),
-            selectedIcon: const Icon(Icons.health_and_safety),
-            label: l10n.navSupport,
-          ),
-          NavigationDestination(
-            icon: const Icon(Icons.person_outline),
-            selectedIcon: const Icon(Icons.person),
-            label: l10n.navProfile,
-          ),
         ],
-      ),
-    );
-  }
-}
-
-class _StubTab extends StatelessWidget {
-  const _StubTab({required this.icon});
-
-  final IconData icon;
-
-  @override
-  Widget build(BuildContext context) {
-    final l10n = AppLocalizations.of(context)!;
-
-    return SafeArea(
-      child: Center(
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Icon(icon, size: 48, color: BoColors.navy.withValues(alpha: 0.4)),
-            const SizedBox(height: 12),
-            Text(
-              l10n.comingSoon,
-              style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                    color: BoColors.navy,
-                  ),
-            ),
-          ],
-        ),
       ),
     );
   }
